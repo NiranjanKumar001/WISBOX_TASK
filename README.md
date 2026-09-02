@@ -51,11 +51,12 @@ Create a `.env` file inside the `server/` directory:
 # Create server/.env
 cat << 'EOF' > server/.env
 PORT=5000
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/multi_store_orders?schema=public"
+DATABASE_URL="postgresql://postgres.wushmifmensopyitojyt:PASSWORD@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.wushmifmensopyitojyt:PASSWORD@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres"
 EOF
 ```
 
-*(Note: Replace `postgres:postgres` with your local PostgreSQL database username and password if different).*
+*(Note: If deployed on cloud services like Render, use Supabase's IPv4 Connection Pooler URLs (`pooler.supabase.com`) for both `DATABASE_URL` and `DIRECT_URL`).*
 
 ### Step 3: Install All Dependencies
 Install dependencies for the root, backend server, vendor app, and customer app in one command:
@@ -124,8 +125,10 @@ This single command automatically launches all 4 application services concurrent
 2. **Order Lifecycle State Machine**:
    - Valid status transitions (`PLACED` $\rightarrow$ `PREPARING` $\rightarrow$ `READY` or `CANCELLED`) are enforced on the backend via `server/src/utils/stateMachine.js`. Invalid transition requests (e.g., `CANCELLED` $\rightarrow$ `READY`) are rejected with HTTP 400.
 
-3. **Prisma Cascade Relationship**:
+3. **Prisma Dual Connection Pooling (`DATABASE_URL` & `DIRECT_URL`)**:
+   - Configured `directUrl` in `schema.prisma` alongside `DATABASE_URL` (using Supabase transaction and session poolers). This enables IPv4-only cloud platforms (e.g. Render) to query and migrate PostgreSQL without IPv6 connection failures.
+
+4. **Prisma Cascade Relationship**:
    - `Order` models relate to `Store` models with `onDelete: Cascade`. Deleting a store cleanly purges all related kitchen tickets from PostgreSQL in a single atomic transaction.
 
 ---
-
