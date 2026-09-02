@@ -1,0 +1,16 @@
+{
+  "name": "multi-store-order-notification-app",
+  "version": "1.0.0",
+  "description": "Multi-Store Order Notification System with Separated Ports",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -k -n \"SERVER,VENDOR,CUSTOMER,STUDIO\" -c \"blue.bold,amber.bold,magenta.bold,green.bold\" \"npm start --prefix server\" \"npm run dev --prefix vendor\" \"npm run dev --prefix customer\" \"npm run db:studio\"",
+    "start": "concurrently -k -n \"SERVER,VENDOR,CUSTOMER,STUDIO\" -c \"blue.bold,amber.bold,magenta.bold,green.bold\" \"npm start --prefix server\" \"npm run dev --prefix vendor\" \"npm run dev --prefix customer\" \"npm run db:studio\"",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix vendor && npm install --prefix customer",
+    "db:setup": "cd server && npx prisma db push && npm run db:seed",
+    "db:studio": "cd server && npx prisma studio"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
