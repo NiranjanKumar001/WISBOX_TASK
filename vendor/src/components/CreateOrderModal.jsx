@@ -26,7 +26,16 @@ export default function CreateOrderModal({ isOpen, onClose, storeId, onCreateOrd
 
   function handleItemChange(index, field, value) {
     const updated = [...items];
-    updated[index][field] = value;
+    if (field === "quantity") {
+      if (value === "") {
+        updated[index].quantity = "";
+      } else {
+        const parsed = parseInt(value, 10);
+        updated[index].quantity = isNaN(parsed) ? "" : parsed;
+      }
+    } else {
+      updated[index][field] = value;
+    }
     setItems(updated);
   }
 
@@ -38,7 +47,13 @@ export default function CreateOrderModal({ isOpen, onClose, storeId, onCreateOrd
       return;
     }
 
-    const validItems = items.filter((item) => item.name.trim() !== "");
+    const validItems = items
+      .filter((item) => item.name.trim() !== "")
+      .map((item) => ({
+        name: item.name.trim(),
+        quantity: Math.max(1, parseInt(item.quantity, 10) || 1)
+      }));
+
     if (validItems.length === 0) {
       alert("Please add at least one item with a valid name");
       return;
@@ -123,7 +138,7 @@ export default function CreateOrderModal({ isOpen, onClose, storeId, onCreateOrd
                     min="1"
                     max="20"
                     value={item.quantity}
-                    onChange={(e) => handleItemChange(index, "quantity", parseInt(e.target.value) || 1)}
+                    onChange={(e) => handleItemChange(index, "quantity", e.target.value)}
                     className="w-14 bg-white border-2 border-black rounded-xl px-2 py-2 text-xs text-slate-900 font-black text-center focus:outline-none focus:border-sky-500"
                   />
                   {items.length > 1 && (
