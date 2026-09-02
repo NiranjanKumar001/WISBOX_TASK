@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.env
+package-lock.json
+*.log
+.DS_Store
+.agents/
+.agent/
+*.md
