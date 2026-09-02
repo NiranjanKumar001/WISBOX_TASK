@@ -8,3 +8,4 @@ package-lock.json
 .agents/
 .agent/
 *.md
+thunder-collection_order_notification_api.json
