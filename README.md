@@ -6,7 +6,17 @@ This application manages real-time order lifecycles across multiple restaurant k
 
 ---
 
-## 🌐 Separated Port Architecture
+## 🚀 Live Production Deployment
+
+| Application | Live URL | Description |
+| :--- | :--- | :--- |
+| 🧑‍🍳 **Kitchen / Vendor Portal** | [https://wisbox-task-f2r4.vercel.app](https://wisbox-task-f2r4.vercel.app) | Real-time order creation, kitchen tickets, & status management |
+| 📺 **Customer Display Board** | [https://wisbox-task.vercel.app](https://wisbox-task.vercel.app) | Dedicated storefront pickup board with Web Audio chime & confetti |
+| ⚡ **Backend Server (REST & Sockets)** | [https://wisbox-task.onrender.com](https://wisbox-task.onrender.com) | Express REST API & Socket.IO WebSocket server |
+
+---
+
+## 🌐 Local Separated Port Architecture
 
 | Application | Port | URL | Description |
 | :--- | :--- | :--- | :--- |
